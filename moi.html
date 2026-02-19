@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un peu plus sur moi — Theo Vigouroux</title>
+<style>
+:root{--bg:#000;--white:#f5f5f7;--gray:#86868b;--blue:#2997ff;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:-apple-system,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.72);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px}
+.logo{font-size:17px;font-weight:500;color:var(--white);text-decoration:none}
+nav ul{display:flex;gap:28px;list-style:none}
+nav ul a{color:var(--gray);font-size:13px;text-decoration:none;transition:color .2s}
+nav ul a:hover{color:var(--white)}
+nav ul a.active{color:var(--white)}
+.btn{padding:13px 26px;border-radius:980px;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .25s;display:inline-block}
+.btn-p{background:var(--blue);color:#fff;border:none}
+.btn-p:hover{background:#47a9ff;transform:scale(1.03)}
+.btn-g{background:rgba(255,255,255,.08);color:var(--white);border:1px solid var(--border)}
+.btn-g:hover{background:rgba(255,255,255,.13);transform:scale(1.03)}
+.sec{padding:80px 40px;max-width:1100px;margin:0 auto}
+.lbl{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:12px;display:block}
+.ttl{font-size:clamp(32px,5vw,54px);font-weight:700;letter-spacing:-2px;line-height:1.08;margin-bottom:20px}
+.bdy{color:var(--gray);font-size:17px;line-height:1.65;max-width:660px;font-weight:300}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.tag{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:500;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:1px solid var(--border)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* HERO */
+.hero{min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 60px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(41,151,255,.12) 0%,transparent 70%);pointer-events:none;animation:pulseGlow 4s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+.hero-tag{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:20px;opacity:0;animation:fadeUp .8s .2s forwards}
+.hero h1{font-size:clamp(44px,7vw,80px);font-weight:700;line-height:1.05;letter-spacing:-3px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:fadeUp .9s .4s forwards}
+.hero-sub{margin-top:20px;font-size:clamp(16px,2vw,20px);color:var(--gray);font-weight:300;max-width:520px;opacity:0;animation:fadeUp .9s .6s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* QUOTE */
+.quote{border-left:2px solid var(--blue);padding:18px 26px;background:rgba(41,151,255,.04);border-radius:0 12px 12px 0;margin:40px 0;opacity:0;transform:translateX(-16px);transition:opacity .7s,transform .7s}
+.quote.on{opacity:1;transform:translateX(0)}
+.quote blockquote{font-size:20px;font-style:italic;font-weight:300;line-height:1.55;margin-bottom:8px}
+.quote cite{font-size:12px;color:var(--blue);letter-spacing:1px;text-transform:uppercase}
+
+/* PASSION CARDS */
+.pcrd{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s,border-color .3s}
+.pcrd.on{opacity:1;transform:translateY(0)}
+.pcrd:hover{border-color:rgba(255,255,255,.18)}
+.picon{font-size:32px;margin-bottom:14px}
+.pcrd h3{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:10px}
+.pcrd p{color:var(--gray);font-size:14px;line-height:1.65;font-weight:300}
+
+/* TRAVEL */
+.tstat-row{display:flex;gap:48px;margin:32px 0;flex-wrap:wrap}
+.tstat .num{font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1;color:var(--white)}
+.tstat .tlbl{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+.map-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:20px;margin:0 0 32px;overflow:hidden;position:relative}
+#worldmap{width:100%;height:auto;display:block}
+.map-country{fill:rgba(255,255,255,0.07);stroke:rgba(255,255,255,0.1);stroke-width:0.4;transition:fill .2s}
+.map-dot{fill:#ff3b30;filter:drop-shadow(0 0 5px rgba(255,59,48,0.9));cursor:pointer;transition:r .2s}
+.map-dot:hover{r:7}
+.map-pulse{fill:rgba(255,59,48,0.3);pointer-events:none}
+.map-tooltip{position:absolute;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;border:1px solid rgba(255,59,48,0.3);pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;z-index:10}
+.map-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray);margin-top:10px}
+.map-dot-ex{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff3b30;box-shadow:0 0 6px rgba(255,59,48,.8);flex-shrink:0}
+
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:52px}
+.dest{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;opacity:0;transform:scale(.94);transition:opacity .4s,transform .4s,background .2s;cursor:default}
+.dest.on{opacity:1;transform:scale(1)}
+.dest:hover{background:rgba(255,255,255,.07)}
+.de{font-size:20px;flex-shrink:0}
+.dn{font-size:13px;font-weight:500}
+.dc{font-size:11px;color:var(--blue)}
+
+/* SPORTS */
+.sprow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.sp{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:12px;background:var(--card);border:1px solid var(--border);font-size:14px;font-weight:500;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s,border-color .3s}
+.sp.on{opacity:1;transform:translateY(0)}
+.sp:hover{border-color:rgba(41,151,255,.3)}
+.sp.init{border-style:dashed;color:var(--gray)}
+.se{font-size:17px}
+
+/* MUSIC GENRES */
+.genre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:24px}
+.genre-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s,border-color .3s}
+.genre-card.on{opacity:1;transform:translateY(0)}
+.genre-card:hover{border-color:rgba(156,39,176,.3)}
+.genre-name{font-size:15px;font-weight:600;margin-bottom:4px}
+.genre-desc{font-size:12px;color:var(--gray);line-height:1.5}
+
+/* SEP */
+.sep{display:flex;align-items:center;gap:16px;margin:60px 0 36px}
+.sep-line{flex:1;height:1px;background:var(--border)}
+.sep-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;white-space:nowrap}
+
+footer{border-top:1px solid var(--border);padding:24px 40px;text-align:center;color:rgba(134,134,139,.5);font-size:12px}
+.cg{position:fixed;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(41,151,255,.055),transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%)}
+@media(max-width:768px){nav{padding:0 20px}nav ul{display:none}.sec{padding:60px 20px}.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="cg" id="cg"></div>
+
+<nav>
+  <a class="logo" href="index.html">Theo Vigouroux</a>
+  <ul>
+    <li><a href="index.html#about">Qui suis-je ?</a></li>
+    <li><a href="projets.html">Projets</a></li>
+    <li><a href="moi.html" class="active">Un peu plus sur moi</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-tag">Theo Vigouroux &middot; Au-dela du technique</p>
+  <h1>Un peu plus<br>sur moi.</h1>
+  <p class="hero-sub">Ingenieur en devenir, mais avant tout curieux du monde — voyageur, sportif, mélomane.</p>
+</div>
+
+<section class="sec">
+
+  <div class="quote">
+    <blockquote>&#171; Voyager, c'est naitre et mourir a chaque instant. &#187;</blockquote>
+    <cite>&mdash; Victor Hugo, poete et philosophe francais (1802&ndash;1885)</cite>
+  </div>
+
+  <!-- 4 PASSION CARDS -->
+  <div class="g2" style="margin-bottom:80px">
+    <div class="pcrd">
+      <div class="picon">✈️</div>
+      <h3>L'Appel du Large</h3>
+      <p>26 voyages, 19 destinations, 3 continents. Du Mexique a Bali, des Bahamas a l'Egypte &mdash; chaque voyage est une ecole a part entiere. Decouvrir de nouvelles cultures, m'adapter a des environnements inconnus et gerer la logistique de grands deplacements nourrit directement mon envie de rejoindre le secteur aerien.</p>
+      <div class="tags"><span class="tag">19 pays</span><span class="tag">3 continents</span><span class="tag">26 voyages</span></div>
+    </div>
+    <div class="pcrd">
+      <div class="picon">🏆</div>
+      <h3>Le Depassement par le Sport</h3>
+      <p>Sportif polyvalent, je recherche constamment a repousser mes limites. Precision du Golf, adrenaline de l'Escalade et du Surf, exigence de la Gym urbaine &mdash; 9 sports pratiques, chacun avec sa propre philosophie du defi physique et mental.</p>
+      <div class="tags"><span class="tag">9 sports</span><span class="tag">Depassement</span><span class="tag">Polyvalence</span></div>
+    </div>
+    <div class="pcrd">
+      <div class="picon">🎵</div>
+      <h3>Univers Musical &amp; Digital</h3>
+      <p>Tres ancre dans les cultures urbaines et numeriques, j'ecoute et j'analyse les structures de genres musicaux modernes et avant-gardistes. Cette curiosite pour les nouvelles sonorites reflete mon interet pour tout ce qui est innovant et en dehors des sentiers battus.</p>
+      <div class="tags"><span class="tag">Digicore</span><span class="tag">New Jazz</span><span class="tag">Jersey Club</span><span class="tag">Shatta</span><span class="tag">Bounce Music</span></div>
+    </div>
+    <div class="pcrd">
+      <div class="picon">🔬</div>
+      <h3>Sciences &amp; Vulgarisation</h3>
+      <p>Au-dela du GEII, je nourris une grande curiosite pour les sciences vulgarisees. Comprendre le "pourquoi" des choses et rester a l'affut des innovations technologiques qui changent le monde est une quete permanente qui guide aussi bien mes etudes que mes lectures.</p>
+      <div class="tags"><span class="tag">Innovation</span><span class="tag">Technologie</span><span class="tag">Curiosite</span></div>
+    </div>
+  </div>
+
+  <!-- VOYAGES -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Mes voyages</span><div class="sep-line"></div></div>
+
+  <div class="tstat-row">
+    <div class="tstat"><div class="num">26</div><div class="tlbl">Voyages</div></div>
+    <div class="tstat"><div class="num">19</div><div class="tlbl">Destinations</div></div>
+    <div class="tstat"><div class="num">3</div><div class="tlbl">Continents</div></div>
+  </div>
+
+  <div class="map-wrap">
+    <div id="map-tooltip" class="map-tooltip"></div>
+    <svg id="worldmap" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="map-legend"><span class="map-dot-ex"></span> Destination visitee &mdash; survole un point pour le nom</div>
+  </div>
+
+  <div class="dg">
+    <div class="dest"><span class="de">🏝️</span><div><div class="dn">Bahamas</div></div></div>
+    <div class="dest"><span class="de">🌴</span><div><div class="dn">Bali</div></div></div>
+    <div class="dest"><span class="de">🕌</span><div><div class="dn">Maroc</div></div></div>
+    <div class="dest"><span class="de">🌊</span><div><div class="dn">Cap-Vert</div></div></div>
+    <div class="dest"><span class="de">🏖️</span><div><div class="dn">Martinique</div></div></div>
+    <div class="dest"><span class="de">🥥</span><div><div class="dn">Guadeloupe</div><div class="dc">x2</div></div></div>
+    <div class="dest"><span class="de">🇵🇹</span><div><div class="dn">Portugal</div></div></div>
+    <div class="dest"><span class="de">🇬🇧</span><div><div class="dn">Angleterre</div><div class="dc">x3</div></div></div>
+    <div class="dest"><span class="de">🏄</span><div><div class="dn">Fuerteventura</div></div></div>
+    <div class="dest"><span class="de">🇪🇸</span><div><div class="dn">Espagne</div><div class="dc">x2</div></div></div>
+    <div class="dest"><span class="de">🍝</span><div><div class="dn">Sicile</div></div></div>
+    <div class="dest"><span class="de">🐪</span><div><div class="dn">Tunisie</div></div></div>
+    <div class="dest"><span class="de">🇩🇪</span><div><div class="dn">Allemagne</div></div></div>
+    <div class="dest"><span class="de">🇲🇽</span><div><div class="dn">Mexique</div></div></div>
+    <div class="dest"><span class="de">⛰️</span><div><div class="dn">Corse</div></div></div>
+    <div class="dest"><span class="de">🚗</span><div><div class="dn">Cuba</div></div></div>
+    <div class="dest"><span class="de">🌅</span><div><div class="dn">Punta Cana</div></div></div>
+    <div class="dest"><span class="de">🇮🇹</span><div><div class="dn">Italie</div></div></div>
+    <div class="dest"><span class="de">🐫</span><div><div class="dn">Egypte</div></div></div>
+  </div>
+
+  <!-- SPORTS -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Sports pratiques</span><div class="sep-line"></div></div>
+  <p class="bdy">9 sports au compteur — des disciplines de precision, d'endurance et d'adrenaline. Les initiations sont en pointille.</p>
+  <div class="sprow">
+    <div class="sp"><span class="se">⚽</span>Football</div>
+    <div class="sp"><span class="se">🏊</span>Natation</div>
+    <div class="sp"><span class="se">🧗</span>Escalade</div>
+    <div class="sp"><span class="se">⛷️</span>Ski</div>
+    <div class="sp"><span class="se">🏂</span>Snowboard</div>
+    <div class="sp"><span class="se">🤸</span>Gym urbaine</div>
+    <div class="sp init"><span class="se">⛳</span>Golf</div>
+    <div class="sp init"><span class="se">🌊</span>Surf</div>
+    <div class="sp init"><span class="se">🚤</span>Ski nautique</div>
+  </div>
+
+  <!-- MUSIQUE -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Univers musical</span><div class="sep-line"></div></div>
+  <p class="bdy" style="margin-bottom:0">J'analyse la structure et l'evolution des genres musicaux modernes comme un ingenieur analyserait un systeme — comprendre comment ils fonctionnent, pourquoi ils emergent, ou ils vont.</p>
+  <div class="genre-grid">
+    <div class="genre-card">
+      <div class="genre-name">Digicore</div>
+      <div class="genre-desc">Hyperpop digitale, textures saturees et emotionalite brute</div>
+    </div>
+    <div class="genre-card">
+      <div class="genre-name">New Jazz</div>
+      <div class="genre-desc">Jazz contemporain fusionne avec le neo-soul et l'electronique</div>
+    </div>
+    <div class="genre-card">
+      <div class="genre-name">Jersey Club</div>
+      <div class="genre-desc">Percussions syncopees et energie club du New Jersey</div>
+    </div>
+    <div class="genre-card">
+      <div class="genre-name">Shatta</div>
+      <div class="genre-desc">Courant afro-urbain francophone dynamique et festif</div>
+    </div>
+    <div class="genre-card">
+      <div class="genre-name">Bounce Music</div>
+      <div class="genre-desc">Genre hybride de la Nouvelle-Orleans, rythmique unique</div>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p>&copy; 2025 &mdash; Theo Vigouroux &middot; Portfolio GEII</p>
+</footer>
+
+<script>
+var cg = document.getElementById('cg');
+document.addEventListener('mousemove', function(e){cg.style.left=e.clientX+'px';cg.style.top=e.clientY+'px'});
+
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(!entry.isIntersecting) return;
+    var el = entry.target;
+    setTimeout(function(){el.classList.add('on')}, parseInt(el.getAttribute('data-d')||0));
+    obs.unobserve(el);
+  });
+},{threshold:0.1});
+
+function observe(sel,step){
+  document.querySelectorAll(sel).forEach(function(el,i){
+    el.setAttribute('data-d',i*step);
+    obs.observe(el);
+  });
+}
+observe('.pcrd',90);
+observe('.quote',0);
+observe('.dest',30);
+observe('.sp',60);
+observe('.genre-card',70);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+var destinations = [
+  {name:"Bahamas",lon:-77.4,lat:25.0},
+  {name:"Bali",lon:115.1,lat:-8.4},
+  {name:"Maroc",lon:-7.0,lat:31.8},
+  {name:"Cap-Vert",lon:-24.0,lat:15.1},
+  {name:"Martinique",lon:-61.0,lat:14.6},
+  {name:"Guadeloupe",lon:-61.6,lat:16.3,count:"x2"},
+  {name:"Portugal",lon:-8.2,lat:39.4},
+  {name:"Angleterre",lon:-1.5,lat:52.4,count:"x3"},
+  {name:"Fuerteventura",lon:-14.0,lat:28.4},
+  {name:"Espagne",lon:-3.7,lat:40.4,count:"x2"},
+  {name:"Sicile",lon:14.0,lat:37.6},
+  {name:"Tunisie",lon:9.5,lat:33.8},
+  {name:"Allemagne",lon:10.4,lat:51.2},
+  {name:"Mexique",lon:-102.5,lat:23.6},
+  {name:"Corse",lon:9.1,lat:42.1},
+  {name:"Cuba",lon:-79.5,lat:21.5},
+  {name:"Punta Cana",lon:-68.4,lat:18.6},
+  {name:"Italie",lon:12.5,lat:42.5},
+  {name:"Egypte",lon:30.8,lat:26.8}
+];
+var W=960,H=500;
+var svg=d3.select("#worldmap").attr("viewBox","0 0 "+W+" "+H);
+var projection=d3.geoNaturalEarth1().scale(153).translate([W/2,H/2]);
+var path=d3.geoPath().projection(projection);
+var tooltip=document.getElementById("map-tooltip");
+fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+  .then(function(r){return r.json()})
+  .then(function(world){
+    var countries=topojson.feature(world,world.objects.countries);
+    svg.append("path").datum(d3.geoGraticule()()).attr("d",path).attr("fill","none").attr("stroke","rgba(255,255,255,0.04)").attr("stroke-width","0.5");
+    svg.selectAll(".map-country").data(countries.features).enter().append("path").attr("class","map-country").attr("d",path);
+    destinations.forEach(function(d,i){
+      var coords=projection([d.lon,d.lat]);
+      if(!coords)return;
+      var x=coords[0],y=coords[1];
+      var pulse=svg.append("circle").attr("cx",x).attr("cy",y).attr("r",4).attr("class","map-pulse").attr("fill","rgba(255,59,48,0.4)").style("pointer-events","none");
+      function anim(){pulse.attr("r",4).attr("opacity",0.8).transition().duration(1800).delay(i*80).attr("r",18).attr("opacity",0).on("end",anim)}
+      setTimeout(anim,i*80);
+      svg.append("circle").attr("cx",x).attr("cy",y).attr("r",5).attr("class","map-dot").attr("fill","#ff3b30").style("filter","drop-shadow(0 0 5px rgba(255,59,48,0.9))")
+        .on("mouseover",function(){
+          tooltip.textContent=d.name+(d.count?" ("+d.count+")":"");
+          tooltip.style.opacity="1";
+          var wr=document.getElementById("worldmap").closest(".map-wrap").getBoundingClientRect();
+          var sr=document.getElementById("worldmap").getBoundingClientRect();
+          tooltip.style.left=(x*(sr.width/W)+sr.left-wr.left-tooltip.offsetWidth/2)+"px";
+          tooltip.style.top=(y*(sr.height/H)+sr.top-wr.top-36)+"px";
+        })
+        .on("mouseout",function(){tooltip.style.opacity="0"});
+    });
+  }).catch(function(e){console.warn(e)});
+</script>
+</body>
+</html>
