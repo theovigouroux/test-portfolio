@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un peu plus sur moi — Theo Vigouroux</title>
+<style>
+:root{--bg:#000;--white:#f5f5f7;--gray:#86868b;--blue:#2997ff;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:-apple-system,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.72);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px}
+.logo{font-size:17px;font-weight:500;color:var(--white);text-decoration:none}
+nav ul{display:flex;gap:28px;list-style:none}
+nav ul a{color:var(--gray);font-size:13px;text-decoration:none;transition:color .2s}
+nav ul a:hover,nav ul a.active{color:var(--white)}
+
+/* HERO */
+.hero{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 60px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(41,151,255,.12) 0%,transparent 70%);pointer-events:none;animation:pulseGlow 4s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+.hero-tag{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:20px;opacity:0;animation:fadeUp .8s .2s forwards}
+.hero h1{font-size:clamp(44px,7vw,80px);font-weight:700;line-height:1.05;letter-spacing:-3px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:fadeUp .9s .4s forwards}
+.hero-sub{margin-top:20px;font-size:clamp(15px,2vw,19px);color:var(--gray);font-weight:300;max-width:600px;line-height:1.7;opacity:0;animation:fadeUp .9s .6s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* LAYOUT */
+.sec{padding:80px 40px;max-width:1100px;margin:0 auto}
+.lbl{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:12px;display:block}
+.ttl{font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+.bdy{color:var(--gray);font-size:16px;line-height:1.75;font-weight:300}
+.sep{display:flex;align-items:center;gap:16px;margin:80px 0 52px}
+.sep-line{flex:1;height:1px;background:var(--border)}
+.sep-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;white-space:nowrap}
+.fadein{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.fadein.on{opacity:1;transform:translateY(0)}
+
+/* STATS */
+.tstat-row{display:flex;gap:52px;margin:36px 0 40px;flex-wrap:wrap}
+.tstat .num{font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1;color:var(--white)}
+.tstat .tlbl{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* WORLD MAP */
+.map-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:20px;margin:0 0 20px;overflow:hidden;position:relative}
+#worldmap{width:100%;height:auto;display:block}
+.map-country{fill:rgba(255,255,255,0.07);stroke:rgba(255,255,255,0.1);stroke-width:0.4}
+.map-dot{fill:#ff3b30;filter:drop-shadow(0 0 5px rgba(255,59,48,0.9));cursor:pointer}
+.map-pulse{fill:rgba(255,59,48,0.3);pointer-events:none}
+.map-tooltip{position:absolute;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;border:1px solid rgba(255,59,48,0.3);pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;z-index:10}
+.map-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray);margin-top:10px}
+.map-dot-ex{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff3b30;box-shadow:0 0 6px rgba(255,59,48,.8);flex-shrink:0}
+
+/* EXPLORER */
+.explorer{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:24px;overflow:hidden;margin-top:16px}
+.explorer-main{display:grid;grid-template-columns:1fr 1fr;min-height:400px}
+.explorer-img{position:relative;overflow:hidden;min-height:300px}
+.explorer-img img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .4s}
+.explorer-img img.fade{opacity:0}
+.explorer-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 50%,rgba(0,0,0,.5))}
+.explorer-content{padding:36px 32px;display:flex;flex-direction:column;justify-content:center}
+.explorer-counter{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:10px}
+.explorer-name{font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:4px}
+.explorer-sub{font-size:13px;color:var(--blue);font-weight:500;margin-bottom:14px}
+.explorer-desc{color:var(--gray);font-size:14px;line-height:1.72;font-weight:300;flex:1}
+.explorer-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.explorer-tag{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:500;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:1px solid var(--border)}
+.explorer-arrows{display:flex;gap:10px;margin-top:20px}
+.arrow-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--white);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.arrow-btn:hover{background:rgba(41,151,255,.15);border-color:var(--blue)}
+.explorer-nav{display:flex;align-items:center;border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.explorer-nav::-webkit-scrollbar{display:none}
+.explorer-nav-btn{flex-shrink:0;padding:13px 16px;font-size:12px;font-weight:500;color:var(--gray);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+.explorer-nav-btn:hover{color:var(--white)}
+.explorer-nav-btn.active{color:var(--white);border-bottom-color:var(--blue)}
+
+/* MUSIC */
+.music-layout{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start;margin-top:40px}
+.music-text .bdy{margin-bottom:28px}
+.music-genres{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.genre-row{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;transition:border-color .25s}
+.genre-row:hover{border-color:rgba(255,255,255,.18)}
+.genre-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;box-shadow:0 0 8px rgba(41,151,255,.6)}
+.genre-name{font-size:14px;font-weight:600;min-width:120px}
+.genre-desc{font-size:12px;color:var(--gray);font-weight:300}
+.music-img-wrap{border-radius:20px;overflow:hidden;aspect-ratio:3/4;position:relative}
+.music-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.music-img-label{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);font-size:13px;color:rgba(255,255,255,.7);font-weight:300}
+
+/* CURSOR */
+.cg{position:fixed;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(41,151,255,.055),transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%)}
+
+footer{border-top:1px solid var(--border);padding:24px 40px;text-align:center;color:rgba(134,134,139,.5);font-size:12px}
+@media(max-width:768px){
+  nav{padding:0 20px}nav ul{display:none}
+  .sec{padding:60px 20px}
+  .explorer-main{grid-template-columns:1fr}
+  .music-layout{grid-template-columns:1fr}
+  .music-img-wrap{aspect-ratio:16/9}
+}
+</style>
+</head>
+<body>
+
+<div class="cg" id="cg"></div>
+
+<nav>
+  <a class="logo" href="index.html">Theo Vigouroux</a>
+  <ul>
+    <li><a href="index.html#about">Qui suis-je ?</a></li>
+    <li><a href="projets.html">Projets</a></li>
+    <li><a href="moi.html" class="active">Un peu plus sur moi</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-tag">Theo Vigouroux &middot; Au-dela du technique</p>
+  <h1>Un peu plus<br>sur moi.</h1>
+  <p class="hero-sub">Ingenieur en devenir, mais avant tout quelqu'un de curieux et passionne. Voyages, sport, musique et sciences — voila ce qui me construit autant que mes etudes.</p>
+</div>
+
+<section class="sec">
+
+  <!-- ══ VOYAGES ══ -->
+  <div class="fadein">
+    <span class="lbl">Passion #1</span>
+    <h2 class="ttl">L'appel du large.</h2>
+    <p class="bdy" style="max-width:700px">Le voyage est pour moi bien plus qu'un loisir — c'est une veritable ecole de vie. Depuis mon plus jeune age, j'ai eu la chance de decouvrir des cultures radicalement differentes, des paysages qui coupent le souffle et des rencontres qui marquent. 26 voyages dans 19 destinations sur 3 continents m'ont appris a m'adapter, a gerer l'imprévu, a observer le monde autrement. C'est aussi cette passion qui nourrit profondement mon envie de travailler dans le secteur aeronautique : l'avion n'est pas qu'un moyen de transport, c'est une porte ouverte sur le monde.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="tstat-row fadein">
+    <div class="tstat"><div class="num">26</div><div class="tlbl">Voyages</div></div>
+    <div class="tstat"><div class="num">19</div><div class="tlbl">Destinations</div></div>
+    <div class="tstat"><div class="num">3</div><div class="tlbl">Continents</div></div>
+  </div>
+
+  <!-- MAP -->
+  <div class="fadein">
+    <div class="map-wrap">
+      <div id="map-tooltip" class="map-tooltip"></div>
+      <svg id="worldmap" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="map-legend"><span class="map-dot-ex"></span> Mes destinations &mdash; survole un point pour le nom</div>
+    </div>
+  </div>
+
+  <!-- TRAVEL EXPLORER -->
+  <div class="fadein">
+    <p style="font-size:13px;color:var(--gray);margin-bottom:8px">Clique sur une destination pour decouvrir</p>
+    <div class="explorer" id="travel-explorer">
+      <div class="explorer-main">
+        <div class="explorer-img">
+          <img id="travel-img" src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80" alt="Bahamas">
+          <div class="explorer-img-overlay"></div>
+        </div>
+        <div class="explorer-content">
+          <div class="explorer-counter" id="travel-counter">01 / 19</div>
+          <div class="explorer-name" id="travel-name">Bahamas</div>
+          <div class="explorer-sub" id="travel-emoji">🏝️ Caraibes</div>
+          <div class="explorer-desc" id="travel-desc">Eau turquoise, sable blanc immacule, silence. Les Bahamas c'est l'image parfaite du paradis tropical. Un voyage qui marque les esprits et rappelle que la nature peut etre d'une beaute absolue. A remplacer par ta propre description !</div>
+          <div class="explorer-tags" id="travel-tags">
+            <span class="explorer-tag">Caraibes</span>
+            <span class="explorer-tag">Ocean</span>
+            <span class="explorer-tag">Detente</span>
+          </div>
+          <div class="explorer-arrows">
+            <button class="arrow-btn" onclick="travelNav(-1)">&#8592;</button>
+            <button class="arrow-btn" onclick="travelNav(1)">&#8594;</button>
+          </div>
+        </div>
+      </div>
+      <div class="explorer-nav" id="travel-nav"></div>
+    </div>
+  </div>
+
+  <!-- ══ SPORT ══ -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Sport</span><div class="sep-line"></div></div>
+
+  <div class="fadein">
+    <span class="lbl">Passion #2</span>
+    <h2 class="ttl">Le depassement<br>par le sport.</h2>
+    <p class="bdy" style="max-width:700px">Le sport a toujours ete pour moi un moyen de me depasser et de tester mes limites. Pas dans un seul registre, mais dans des disciplines tres differentes — ce qui m'interesse c'est la diversite des defis : la precision, l'adrénaline, l'endurance, l'equilibre. Chaque sport m'a appris quelque chose sur moi-meme, sur ma capacite a perseverer, a gerer le stress, a progresser. 9 sports pratiques, autant d'ecoles differentes. A remplacer par ta propre description !</p>
+  </div>
+
+  <!-- SPORT EXPLORER -->
+  <div class="fadein">
+    <p style="font-size:13px;color:var(--gray);margin-bottom:8px">Clique sur un sport pour en savoir plus</p>
+    <div class="explorer" id="sport-explorer">
+      <div class="explorer-main">
+        <div class="explorer-img">
+          <img id="sport-img" src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80" alt="Football">
+          <div class="explorer-img-overlay"></div>
+        </div>
+        <div class="explorer-content">
+          <div class="explorer-counter" id="sport-counter">01 / 09</div>
+          <div class="explorer-name" id="sport-name">Football</div>
+          <div class="explorer-sub" id="sport-emoji">⚽ Sport collectif</div>
+          <div class="explorer-desc" id="sport-desc">Le football c'est le sport de mon enfance, celui qui m'a appris l'esprit d'equipe, la communication et la gestion de la pression. Jouer collectif, lire le jeu, anticiper — des reflexes qui se retrouvent dans tous les aspects de ma vie. A remplacer par ta propre description !</div>
+          <div class="explorer-tags" id="sport-tags">
+            <span class="explorer-tag">Collectif</span>
+            <span class="explorer-tag">Tactique</span>
+            <span class="explorer-tag">Endurance</span>
+          </div>
+          <div class="explorer-arrows">
+            <button class="arrow-btn" onclick="sportNav(-1)">&#8592;</button>
+            <button class="arrow-btn" onclick="sportNav(1)">&#8594;</button>
+          </div>
+        </div>
+      </div>
+      <div class="explorer-nav" id="sport-nav"></div>
+    </div>
+  </div>
+
+  <!-- ══ MUSIQUE ══ -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Musique</span><div class="sep-line"></div></div>
+
+  <div class="music-layout fadein">
+    <div class="music-text">
+      <span class="lbl">Passion #3</span>
+      <h2 class="ttl">Un univers<br>musical singulier.</h2>
+      <p class="bdy">La musique occupe une place importante dans mon quotidien, pas en tant que musicien, mais en tant qu'auditeur curieux et attentif. Ce qui m'attire ce sont les genres qui bougent les lignes — les sons qu'on n'entend pas a la radio, ceux qui viennent de scenes underground, de villes comme Jersey City, Paris, Accra ou Tokyo. J'aime comprendre comment un genre emerge, comment il evolue, quelles influences il absorbe. C'est finalement la meme curiosite qui me pousse dans mes etudes techniques : comprendre les systemes de l'interieur.</p>
+      <div class="music-genres">
+        <div class="genre-row fadein">
+          <div class="genre-dot"></div>
+          <div class="genre-name">Digicore</div>
+          <div class="genre-desc">Hyperpop digitale, textures saturees, emotionalite brute et production experimentale</div>
+        </div>
+        <div class="genre-row fadein">
+          <div class="genre-dot"></div>
+          <div class="genre-name">New Jazz</div>
+          <div class="genre-desc">Jazz contemporain fusionne avec le neo-soul et l'electronique — Kamasi Washington, Yussef Dayes</div>
+        </div>
+        <div class="genre-row fadein">
+          <div class="genre-dot"></div>
+          <div class="genre-name">Jersey Club</div>
+          <div class="genre-desc">Percussions syncopees ultra-rapides, energie club du New Jersey — 160 BPM et samples vocaux</div>
+        </div>
+        <div class="genre-row fadein">
+          <div class="genre-dot"></div>
+          <div class="genre-name">Shatta</div>
+          <div class="genre-desc">Courant afro-urbain francophone, riddims jamaicains fusionnes avec la culture urbaine parisienne</div>
+        </div>
+        <div class="genre-row fadein">
+          <div class="genre-dot"></div>
+          <div class="genre-name">Bounce Music</div>
+          <div class="genre-desc">Genre hybride de la Nouvelle-Orleans, rythmique unique, culture locale profondement ancree</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="music-img-wrap fadein">
+        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80" alt="Concert — remplacer par ta photo">
+        <div class="music-img-label">📸 Remplace cette photo par une de tes photos de concert</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCIENCES ══ -->
+  <div class="sep"><div class="sep-line"></div><span class="sep-label">Sciences</span><div class="sep-line"></div></div>
+
+  <div class="fadein">
+    <span class="lbl">Passion #4</span>
+    <h2 class="ttl">La curiosite<br>comme moteur.</h2>
+    <p class="bdy" style="max-width:700px">Au-dela de mes etudes en GEII, je nourris une grande curiosite pour les sciences vulgarisees. Comprendre le "pourquoi" des choses — pourquoi un avion vole, comment fonctionne un reseau neuronal, pourquoi Internet est structure comme ca — est une quete permanente. Je suis regulierement des chaines de vulgarisation scientifique, je lis des articles de fond, et j'essaie de faire le lien entre ce que j'apprends en cours et ce qui se passe dans le monde reel. C'est cette meme curiosite qui fait de moi un etudiant investit et un futur ingenieur attentif aux innovations qui changent le monde.</p>
+  </div>
+
+</section>
+
+<footer>
+  <p>&copy; 2025 &mdash; Theo Vigouroux &middot; Portfolio GEII</p>
+</footer>
+
+<script>
+// Cursor
+var cg = document.getElementById('cg');
+document.addEventListener('mousemove', function(e){cg.style.left=e.clientX+'px';cg.style.top=e.clientY+'px'});
+
+// Observer
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(!e.isIntersecting) return;
+    var el=e.target, d=parseInt(el.getAttribute('data-d')||0);
+    setTimeout(function(){el.classList.add('on')},d);
+    obs.unobserve(el);
+  });
+},{threshold:0.1});
+document.querySelectorAll('.fadein').forEach(function(el,i){
+  el.setAttribute('data-d',i*60);
+  obs.observe(el);
+});
+
+// ══ DATA ══
+var travels = [
+  {name:"Bahamas",emoji:"🏝️",region:"Caraibes",img:"https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80",desc:"Eau turquoise, sable blanc immacule, silence. Les Bahamas c'est l'image parfaite du paradis tropical. A remplacer par ta propre description !",tags:["Caraibes","Ocean","Detente"]},
+  {name:"Bali",emoji:"🌴",region:"Asie du Sud-Est",img:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",desc:"Entre temples ancestraux, rizières en terrasses et ocean indien — Bali est une ile qui ne ressemble a aucune autre. A remplacer par ta propre description !",tags:["Culture","Nature","Spirituel"]},
+  {name:"Maroc",emoji:"🕌",region:"Afrique du Nord",img:"https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=800&q=80",desc:"Les souks de Marrakech, le desert du Sahara, les montagnes de l'Atlas. Le Maroc est une explosion de couleurs et de saveurs. A remplacer par ta propre description !",tags:["Culture","Gastronomie","Paysage"]},
+  {name:"Cap-Vert",emoji:"🌊",region:"Atlantique",img:"https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80",desc:"Un archipel suspendu au milieu de l'Atlantique, entre influences africaines et portugaises. Une destination hors des sentiers battus. A remplacer par ta propre description !",tags:["Ile","Musique","Ocean"]},
+  {name:"Martinique",emoji:"🏖️",region:"Caraibes",img:"https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80",desc:"L'ile aux fleurs — entre foret tropicale, plages de sable noir et rhum agricole. La Martinique est un bout de France en plein ocean Atlantique. A remplacer par ta propre description !",tags:["Antilles","Nature","Gastronomie"]},
+  {name:"Guadeloupe",emoji:"🥥",region:"Caraibes",img:"https://images.unsplash.com/photo-1589820296156-2454bb8a6ad1?w=800&q=80",desc:"En forme de papillon, la Guadeloupe c'est deux iles aux caracteres bien distincts. Visites plusieurs fois, chaque sejour a revele de nouveaux coins de paradis. A remplacer par ta propre description !",tags:["Antilles","x2","Ocean"]},
+  {name:"Portugal",emoji:"🇵🇹",region:"Europe du Sud",img:"https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=800&q=80",desc:"Lisbonne et ses tramways, Porto et ses azulejos, l'Algarve et ses falaises dorées. Le Portugal est un pays qui surprend par sa richesse culturelle et la chaleur de ses habitants. A remplacer par ta propre description !",tags:["Europe","Culture","Gastronomie"]},
+  {name:"Angleterre",emoji:"🇬🇧",region:"Europe du Nord",img:"https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&q=80",desc:"Londres, ses musees gratuits, son energie multiculturelle et son architecture melant tradition et modernite. Visite trois fois — une destination qui ne lasse pas. A remplacer par ta propre description !",tags:["Europe","x3","Culture"]},
+  {name:"Fuerteventura",emoji:"🏄",region:"Espagne / Atlantique",img:"https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80",desc:"Des plages interminables battues par le vent, des dunes de sable blanc et un ocean parfait pour le surf. Fuerteventura c'est la sauvagerie des Canaries. A remplacer par ta propre description !",tags:["Surf","Vent","Canaries"]},
+  {name:"Espagne",emoji:"🇪🇸",region:"Europe du Sud",img:"https://images.unsplash.com/photo-1559060017-445fb9ed4ebf?w=800&q=80",desc:"Entre l'architecture delirante de Gaudi, les plages de la Costa Brava et la vie nocturne madrilene — l'Espagne est une destination qui se redécouvre a chaque visite. A remplacer par ta propre description !",tags:["Europe","x2","Culture"]},
+  {name:"Sicile",emoji:"🍝",region:"Italie / Mediterranee",img:"https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&q=80",desc:"La plus grande ile de la Mediterranee, carrefour de civilisations depuis des millenaires. Gastronomie exceptionnelle, temples grecs, volcans — la Sicile est une destination qui depasse toutes les attentes. A remplacer par ta propre description !",tags:["Italie","Gastronomie","Histoire"]},
+  {name:"Tunisie",emoji:"🐪",region:"Afrique du Nord",img:"https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=800&q=80",desc:"Du Sahara aux plages de Djerba, en passant par les medinas de Tunis et Kairouan — la Tunisie concentre une incroyable diversite de paysages et d'histoire. A remplacer par ta propre description !",tags:["Maghreb","Sahara","Culture"]},
+  {name:"Allemagne",emoji:"🇩🇪",region:"Europe Centrale",img:"https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80",desc:"La rigueur et l'innovation allemande se retrouvent dans chaque aspect du pays — architecture, design, ingenierie. Une destination qui parle directement a l'ingenieur que je veux devenir. A remplacer par ta propre description !",tags:["Europe","Ingenierie","Culture"]},
+  {name:"Mexique",emoji:"🇲🇽",region:"Amerique Centrale",img:"https://images.unsplash.com/photo-1518638150340-f706e86654de?w=800&q=80",desc:"Pyramides mayas, cenotes turquoise, street food explosif et nuits de Mexico — le Mexique est un pays d'une richesse et d'une diversite qui depassent largement les cliches. A remplacer par ta propre description !",tags:["Amerique","Culture","Gastronomie"]},
+  {name:"Corse",emoji:"⛰️",region:"France / Mediterranee",img:"https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=800&q=80",desc:"L'ile de Beaute — montagnes qui plongent dans la mer, maquis parfume, eau cristalline. La Corse est une destination unique en Europe, sauvage et majestueuse. A remplacer par ta propre description !",tags:["France","Montagne","Mer"]},
+  {name:"Cuba",emoji:"🚗",region:"Caraibes",img:"https://images.unsplash.com/photo-1500759285222-a95626359a97?w=800&q=80",desc:"Une ile suspendue dans le temps — voitures des annees 50, musique qui s'echappe de chaque fenetre, architecture coloniale et une chaleur humaine incomparable. Cuba est une experience unique. A remplacer par ta propre description !",tags:["Caraibes","Histoire","Musique"]},
+  {name:"Punta Cana",emoji:"🌅",region:"Republique Dominicaine",img:"https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80",desc:"Cocotiers, plages de sable fin, eaux turquoise — Punta Cana c'est la quintessence des Caraibes. Un sejour sous le signe de la detente totale et des couchers de soleil spectaculaires. A remplacer par ta propre description !",tags:["Caraibes","Plage","Soleil"]},
+  {name:"Italie",emoji:"🇮🇹",region:"Europe du Sud",img:"https://images.unsplash.com/photo-1534445867742-43195f401b6c?w=800&q=80",desc:"Rome, Florence, Venise — l'Italie est un musee a ciel ouvert dote d'une gastronomie incomparable. Un pays ou chaque rue, chaque plat, chaque monument raconte des millenaires d'histoire. A remplacer par ta propre description !",tags:["Europe","Culture","Gastronomie"]},
+  {name:"Egypte",emoji:"🐫",region:"Afrique du Nord",img:"https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=800&q=80",desc:"Se retrouver face aux pyramides de Gizeh, naviguer sur le Nil, plonger dans la mer Rouge — l'Egypte est une destination hors du temps qui reunit histoire antique et nature spectaculaire. A remplacer par ta propre description !",tags:["Afrique","Histoire","Plongee"]}
+];
+
+var sports = [
+  {name:"Football",emoji:"⚽",type:"Sport collectif",img:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",desc:"Le football c'est le sport de mon enfance, celui qui m'a appris l'esprit d'equipe, la communication et la gestion de la pression. Jouer collectif, lire le jeu, anticiper — des reflexes utiles dans tous les aspects de la vie. A remplacer par ta propre description !",tags:["Collectif","Tactique","Endurance"]},
+  {name:"Natation",emoji:"🏊",type:"Sport d'endurance",img:"https://images.unsplash.com/photo-1560090995-01632a28895b?w=800&q=80",desc:"La natation c'est le sport du calme et de l'endurance. Dans l'eau, plus de bruit, juste le rythme de la respiration et des bras. Une discipline qui développe autant la resilience mentale que la condition physique. A remplacer par ta propre description !",tags:["Endurance","Mental","Calme"]},
+  {name:"Escalade",emoji:"🧗",type:"Sport de precision",img:"https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&q=80",desc:"L'escalade c'est un probleme a resoudre. Lecture du rocher, gestion du poids, placement des pieds — chaque voie est un puzzle physique et mental. Une discipline qui combine force, souplesse et sang-froid. A remplacer par ta propre description !",tags:["Precision","Mental","Force"]},
+  {name:"Ski",emoji:"⛷️",type:"Sport de glisse",img:"https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&q=80",desc:"Descendre une piste a pleine vitesse, sentir la neige sous les carres, lire le relief pour anticiper chaque virage. Le ski est pour moi synonyme de liberte et d'adrénaline maitrisee. La montagne en hiver est un terrain de jeu unique. A remplacer par ta propre description !",tags:["Vitesse","Montagne","Adrénaline"]},
+  {name:"Snowboard",emoji:"🏂",type:"Sport de glisse",img:"https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&q=80",desc:"Le snowboard apporte une sensation tres differente du ski — la position de profil, le rapport au sol, les courbes plus amples. C'est une autre langue corporelle sur la neige, qui demande plus d'ecoute du corps. A remplacer par ta propre description !",tags:["Style","Montagne","Glisse"]},
+  {name:"Gym urbaine",emoji:"🤸",type:"Sport urbain",img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",desc:"Transformer la ville en salle de sport. Tractions, figures de force et d'equilibre — la gym urbaine demande une maitrise complete du corps et une progression patiente. Elle m'a appris que la vraie force vient de l'interieur. A remplacer par ta propre description !",tags:["Force","Urbain","Corps"]},
+  {name:"Golf",emoji:"⛳",type:"Initiation",img:"https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80",desc:"Le golf m'a appris que certains sports se jouent d'abord dans la tete. La precision requise, la patience, la gestion des emotions — une initiation qui m'a ouvert les yeux sur un sport bien plus technique et exigeant que son image ne le laisse penser. A remplacer !",tags:["Precision","Mental","Initiation"]},
+  {name:"Surf",emoji:"🌊",type:"Initiation",img:"https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80",desc:"Lire l'ocean, sentir le bon moment pour ramer, trouver l'equilibre sur la planche — le surf est une negociation permanente avec la nature. Une initiation fascinante qui m'a donne un profond respect pour la mer. A remplacer par ta propre description !",tags:["Ocean","Equilibre","Initiation"]},
+  {name:"Ski nautique",emoji:"🚤",type:"Initiation",img:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",desc:"Tenu par la corde, traine par le bateau — le ski nautique combine equilibre, force et vitesse sur l'eau. Une initiation sportive et ludique qui melange l'adrénaline de la vitesse et la fraicheur de l'eau. A remplacer par ta propre description !",tags:["Eau","Vitesse","Initiation"]}
+];
+
+// ══ EXPLORER ENGINE ══
+var travelIdx = 0, sportIdx = 0;
+
+function buildNav(data, id, fn) {
+  var nav = document.getElementById(id);
+  nav.innerHTML = '';
+  data.forEach(function(item, i) {
+    var btn = document.createElement('button');
+    btn.className = 'explorer-nav-btn' + (i===0?' active':'');
+    btn.textContent = item.emoji + ' ' + item.name;
+    btn.onclick = function(){ fn(i); };
+    nav.appendChild(btn);
+  });
+}
+
+function updateExplorer(data, idx, ids) {
+  var d = data[idx];
+  var img = document.getElementById(ids.img);
+  img.classList.add('fade');
+  setTimeout(function(){
+    img.src = d.img; img.alt = d.name;
+    img.onload = function(){ img.classList.remove('fade'); };
+    img.onerror = function(){ img.classList.remove('fade'); };
+  }, 200);
+  document.getElementById(ids.counter).textContent = String(idx+1).padStart(2,'0') + ' / ' + String(data.length).padStart(2,'0');
+  document.getElementById(ids.name).textContent = d.name;
+  document.getElementById(ids.emoji).textContent = d.emoji + ' ' + (d.region || d.type);
+  document.getElementById(ids.desc).textContent = d.desc;
+  var tagsEl = document.getElementById(ids.tags);
+  tagsEl.innerHTML = d.tags.map(function(t){ return '<span class="explorer-tag">'+t+'</span>'; }).join('');
+  document.querySelectorAll('#'+ids.nav+' .explorer-nav-btn').forEach(function(btn,i){
+    btn.classList.toggle('active', i===idx);
+    if(i===idx) btn.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  });
+}
+
+var tIds = {img:'travel-img',counter:'travel-counter',name:'travel-name',emoji:'travel-emoji',desc:'travel-desc',tags:'travel-tags',nav:'travel-nav'};
+var sIds = {img:'sport-img',counter:'sport-counter',name:'sport-name',emoji:'sport-emoji',desc:'sport-desc',tags:'sport-tags',nav:'sport-nav'};
+
+function travelNav(dir){ travelIdx=(travelIdx+dir+travels.length)%travels.length; updateExplorer(travels,travelIdx,tIds); }
+function travelGo(i){ travelIdx=i; updateExplorer(travels,travelIdx,tIds); }
+function sportNav(dir){ sportIdx=(sportIdx+dir+sports.length)%sports.length; updateExplorer(sports,sportIdx,sIds); }
+function sportGo(i){ sportIdx=i; updateExplorer(sports,sportIdx,sIds); }
+
+buildNav(travels,'travel-nav',travelGo);
+buildNav(sports,'sport-nav',sportGo);
+</script>
+
+<!-- D3 Map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+var destinations=[
+  {name:"Bahamas",lon:-77.4,lat:25.0},{name:"Bali",lon:115.1,lat:-8.4},
+  {name:"Maroc",lon:-7.0,lat:31.8},{name:"Cap-Vert",lon:-24.0,lat:15.1},
+  {name:"Martinique",lon:-61.0,lat:14.6},{name:"Guadeloupe",lon:-61.6,lat:16.3,count:"x2"},
+  {name:"Portugal",lon:-8.2,lat:39.4},{name:"Angleterre",lon:-1.5,lat:52.4,count:"x3"},
+  {name:"Fuerteventura",lon:-14.0,lat:28.4},{name:"Espagne",lon:-3.7,lat:40.4,count:"x2"},
+  {name:"Sicile",lon:14.0,lat:37.6},{name:"Tunisie",lon:9.5,lat:33.8},
+  {name:"Allemagne",lon:10.4,lat:51.2},{name:"Mexique",lon:-102.5,lat:23.6},
+  {name:"Corse",lon:9.1,lat:42.1},{name:"Cuba",lon:-79.5,lat:21.5},
+  {name:"Punta Cana",lon:-68.4,lat:18.6},{name:"Italie",lon:12.5,lat:42.5},
+  {name:"Egypte",lon:30.8,lat:26.8}
+];
+var W=960,H=500;
+var svg=d3.select("#worldmap").attr("viewBox","0 0 "+W+" "+H);
+var proj=d3.geoNaturalEarth1().scale(153).translate([W/2,H/2]);
+var pathGen=d3.geoPath().projection(proj);
+var tip=document.getElementById("map-tooltip");
+fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+  .then(function(r){return r.json()})
+  .then(function(world){
+    var countries=topojson.feature(world,world.objects.countries);
+    svg.append("path").datum(d3.geoGraticule()()).attr("d",pathGen).attr("fill","none").attr("stroke","rgba(255,255,255,0.04)").attr("stroke-width","0.5");
+    svg.selectAll(".map-country").data(countries.features).enter().append("path").attr("class","map-country").attr("d",pathGen);
+    destinations.forEach(function(d,i){
+      var c=proj([d.lon,d.lat]);if(!c)return;
+      var x=c[0],y=c[1];
+      var pulse=svg.append("circle").attr("cx",x).attr("cy",y).attr("r",4).attr("class","map-pulse").style("pointer-events","none");
+      function anim(){pulse.attr("r",4).attr("opacity",0.8).transition().duration(1800).delay(i*80).attr("r",18).attr("opacity",0).on("end",anim)}
+      setTimeout(anim,i*80);
+      svg.append("circle").attr("cx",x).attr("cy",y).attr("r",5).attr("class","map-dot").attr("fill","#ff3b30").style("filter","drop-shadow(0 0 5px rgba(255,59,48,0.9))")
+        .on("mouseover",function(){
+          tip.textContent=d.name+(d.count?" ("+d.count+")":"");tip.style.opacity="1";
+          var wr=document.getElementById("worldmap").closest(".map-wrap").getBoundingClientRect();
+          var sr=document.getElementById("worldmap").getBoundingClientRect();
+          tip.style.left=(x*(sr.width/W)+sr.left-wr.left-tip.offsetWidth/2)+"px";
+          tip.style.top=(y*(sr.height/H)+sr.top-wr.top-36)+"px";
+        })
+        .on("mouseout",function(){tip.style.opacity="0"});
+    });
+  }).catch(function(e){console.warn(e)});
+</script>
+</body>
+</html>
